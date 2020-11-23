@@ -25,6 +25,12 @@ void Player::Update(float deltaTime,int playerstatus)
 	0 = stand walk jump;
 	1 = attack;
 	*/
+	
+	if (playerHitPoint <= 0)
+	{
+		body.setPosition(sf::Vector2f(300.0f, 600.0f));
+	}
+
 	velocity.x = 0.0f;
 
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
@@ -55,7 +61,11 @@ void Player::Update(float deltaTime,int playerstatus)
 		row = 1;
 
 		if (velocity.x > 0.0f)
+		{
 			faceRight = false;
+			
+		}
+			
 		else
 			faceRight = true;
 	}
@@ -97,42 +107,61 @@ void Player::OnCollision(sf::Vector2f direction,float deltaTime,int type)
 	1 = mushrooms
 	2 = snails
 	*/
-	switch (type)
+	delayDamageTime += deltaTime;
+	if (type)
 	{
-		if (type == 1)
+		if (delayDamageTime >= 1.0f)
 		{
-			playerHitPoint -= 16;
-			break;
+
+			printf("%d  %.2f\n", type, playerHitPoint);
+			switch (type)
+			{
+			case 1:
+				//playerHitPoint -= 16.0f;
+				//printf("-16\n");
+				break;
+			case 2:
+				playerHitPoint -= 6.0f;
+				break;
+			default:
+				break;
+			}
+			delayDamageTime = 0.0f;
 		}
-		if (type == 2)
-		{
-			playerHitPoint -= 6;
-			break;
-		}
-	default:
-		break;
+		
 	}
-	if (direction.x < 0.0f)
+		
+	
+
+
+	if (direction.x < 0.0f && type == 0)
 	{
 		//Collision on the left.
 		velocity.x = 0.0f;
 	}
-	else if (direction.x > 0.0f)
+	else if (direction.x > 0.0f && type == 0)
 	{
 		//Collsion on the right
 		velocity.x = 0.0f;
 	}
-	if (direction.y <= 0.0f)
+	if (direction.y <= 0.0f && type == 0)
 	{
 		//Collision on the bottom
 		velocity.y = 0.0f;
 		canJump = true;
 	}
-	else if (direction.y > 0.0f)
+	else if (direction.y > 0.0f && type == 0)
 	{
 		//Collision on the top
 		velocity.y = 0.0f;
 	}
 
+
+}
+
+bool Player::SlashFaceRight(void)
+{
+	
+	return faceRight;
 }
 

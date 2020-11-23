@@ -13,6 +13,8 @@ public:
 	void Update(float deltatTime,int playerstatus);
 	void Draw(sf::RenderWindow& window); 
 	void OnCollision(sf::Vector2f direction,float deltaTime,int type);
+	bool SlashFaceRight(void);
+	
 
 	sf::Vector2f GetPosition() { return body.getPosition(); }
 	Collider GetCollider() { return Collider(body); }
@@ -32,6 +34,11 @@ private:
 	float cdJump = 0.5f;
 	float coolingJump = 0.0f;
 	float playerHitPoint;
+	float delayDamageTime = 0.0f;
+	float smoothMove = 0.0f;
 
 };
+
+
+
 

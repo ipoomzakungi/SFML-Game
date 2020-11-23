@@ -21,6 +21,7 @@ int main() {
     minimapView.setViewport(sf::FloatRect(0.75f, 0, 0.25f, 0.25f));
     minimapView.setSize(2732, 1536);
     
+    
     //player.setFillColor(sf::Color::Red);
     //player.setOrigin(50.0f, 50.0f);
     sf::Texture playerTexture;
@@ -33,7 +34,9 @@ int main() {
     sf::Texture mapTopMid;
     sf::Texture mapMiddle2;
     sf::Texture monsterMushroom;
- 
+    sf::Texture slashEffect;
+    sf::Texture testTexture;
+
     {
         playerTexture.loadFromFile("tux_from_linux.png");
         playerAttack.loadFromFile("playerattack.png");
@@ -45,16 +48,15 @@ int main() {
         mapTopMid.loadFromFile("maptopmid.png");
         mapMiddle2.loadFromFile("mapmiddle2.png");
         monsterMushroom.loadFromFile("monsterMushroom.png");
-    }
-    {
-        
-        /*sprite.setTextureRect(sf::IntRect(10, 10, 32, 32));
-        sprite.setTextureRect(sf::IntRect(10, 10, 32, 32));
-        sprite.setTextureRect(sf::IntRect(10, 10, 32, 32));
-        sprite.setTextureRect(sf::IntRect(10, 10, 32, 32));
-        sprite.setTextureRect(sf::IntRect(10, 10, 32, 32));*/
+        slashEffect.loadFromFile("slashEffect.png");
+        testTexture.loadFromFile("testTexture.png");
     }
     
+    sf::RectangleShape slash(sf::Vector2f(82.4f, 86.4f));
+    slash.setOrigin(slash.getSize() / 2.0f);
+    slash.setTexture(&slashEffect);
+    
+
     
     mapTop.setRepeated(true);
     mapMiddle.setRepeated(true);
@@ -63,23 +65,25 @@ int main() {
     mapSide2Right.setRepeated(true);
     mapTopMid.setRepeated(true);
     mapMiddle2.setRepeated(true);
+    testTexture.setRepeated(true);
 
    
 
 
     ResizeView(window, view);
     
-    Mons monsterMush(&monsterMushroom, sf::Vector2u(3, 1), 0.2f, 200.0f, 200, sf::Vector2f(66.0f, 60.0f), sf::Vector2f(400.0f, 800.0f));
-    Player player(&playerTexture, sf::Vector2u(5, 3), 0.2f, 450.0f, 200,100);
+    Mons monsterMush(&monsterMushroom, sf::Vector2u(3, 1), 0.2f, 160.0f,200,50.0f, sf::Vector2f(66.0f, 60.0f), sf::Vector2f(400.0f, 800.0f));
+    Player player(&playerTexture, sf::Vector2u(5, 3), 0.2f, 800.0f, 200,100); //speed 450.0f
     
-    Player playerattack(&playerAttack, sf::Vector2u(5, 1), 0.1f, 450.0f, 200,100);
+    Player playerattack(&playerAttack, sf::Vector2u(3, 1), 0.15f, 800.0f, 200,100);
 
     std::vector<Platform> platforms;
     //std::vector<Mons> monsterMush;
 
     {
-        platforms.push_back(Platform(nullptr, sf::Vector2f(300.0f, 1100.0f), sf::Vector2f(0.0f, 1000.0f)));
-        platforms.push_back(Platform(nullptr, sf::Vector2f(300.0f, 1100.0f), sf::Vector2f(-300.0f, 1000.0f)));
+        
+        //platforms.push_back(Platform(nullptr, sf::Vector2f(300.0f, 1100.0f), sf::Vector2f(0.0f, 1000.0f)));
+        /*platforms.push_back(Platform(nullptr, sf::Vector2f(300.0f, 1100.0f), sf::Vector2f(-300.0f, 1000.0f)));
         platforms.push_back(Platform(nullptr, sf::Vector2f(1100.0f, 800.0f), sf::Vector2f(666.0f, 1313.0f)));
         platforms.push_back(Platform(nullptr, sf::Vector2f(4040.0f, 250.0f), sf::Vector2f(3630.0f, 1113.0f)));
         platforms.push_back(Platform(nullptr, sf::Vector2f(1500.0f, 600.0f), sf::Vector2f(1300.0f, 2000.0f)));
@@ -98,7 +102,21 @@ int main() {
 
         platforms.push_back(Platform(nullptr, sf::Vector2f(400.0f, 200.0f), sf::Vector2f(500.0f, 200.0f)));
         platforms.push_back(Platform(nullptr, sf::Vector2f(400.0f, 200.0f), sf::Vector2f(500.0f, 0.0f)));
-        platforms.push_back(Platform(nullptr, sf::Vector2f(1500.0f, 200.0f), sf::Vector2f(400.0f, 375.0f)));
+        platforms.push_back(Platform(nullptr, sf::Vector2f(1500.0f, 200.0f), sf::Vector2f(400.0f, 375.0f)));*/
+        platforms.push_back(Platform(&mapMiddle2, sf::Vector2f(630.0f, 180.0f), sf::Vector2f(-630.0f, 640.0f)));
+        platforms.push_back(Platform(&mapMiddle2, sf::Vector2f(630.0f, 180.0f), sf::Vector2f(-630.0f, 820.0f)));
+
+        platforms.push_back(Platform(&mapMiddle2, sf::Vector2f(630.0f, 180.0f), sf::Vector2f(0.0f, 460.0f)));
+        platforms.push_back(Platform(&mapMiddle2, sf::Vector2f(630.0f, 180.0f), sf::Vector2f(630.0f, 460.0f)));
+
+        platforms.push_back(Platform(&mapMiddle2, sf::Vector2f(630.0f, 180.0f), sf::Vector2f(0.0f, 1000.0f)));
+        platforms.push_back(Platform(&mapMiddle2, sf::Vector2f(630.0f, 180.0f), sf::Vector2f(630.0f, 1000.0f)));
+        platforms.push_back(Platform(&mapMiddle2, sf::Vector2f(630.0f, 180.0f), sf::Vector2f(0.0f, 1180.0f)));
+        platforms.push_back(Platform(&mapMiddle2, sf::Vector2f(630.0f, 180.0f), sf::Vector2f(630.0f, 1180.0f)));
+
+        platforms.push_back(Platform(&mapMiddle2, sf::Vector2f(630.0f, 180.0f), sf::Vector2f(1500.0f, 900.0f)));
+        platforms.push_back(Platform(&mapMiddle2, sf::Vector2f(630.0f, 180.0f), sf::Vector2f(1860.0f, 900.0f)));
+
     }
     
    
@@ -106,6 +124,8 @@ int main() {
 
     float deltaTime = 0.0f;
     int playerstatus = 0;
+    float attackSwitch = 0.0f;
+    
     sf::Clock clock;
 
     
@@ -171,29 +191,32 @@ int main() {
                 playerattack.OnCollision(direction, deltaTime, 0);
             }
 
-            Collider mushroomCollision = monsterMush.GetCollider();
+            /*Collider mushroomCollision = monsterMush.GetCollider();
             if (platform.GetCollider().CheckCollision(mushroomCollision, direction, 1.0f,1))
-                monsterMush.OnCollision(direction, deltaTime);
+                monsterMush.OnCollision(direction, deltaTime,0);*/
             
             
         }
-        Collider playerCollision = player.GetCollider(); 
-        if (monsterMush.GetCollider().CheckCollision(playerCollision, direction, 1.0f, 0))
+
+        
+
+        
+            
+        Collider playerCollision = player.GetCollider();
+
+        /*if (monsterMush.GetCollider().CheckCollision(playerCollision, direction, 1.0f, 0))
         {
             player.OnCollision(direction, deltaTime, 1);
-        }
-        Collider playerattackCollision = playerattack.GetCollider();
-        if (monsterMush.GetCollider().CheckCollision(playerattackCollision, direction, 1.0f, 0))
-        {
-            playerattack.OnCollision(direction, deltaTime, 1);
-        }
-            
+   
+        }*/
+
         
         
 
 
         view.setCenter(player.GetPosition());
         minimapView.setCenter(player.GetPosition());
+        
 
         window.clear(sf::Color(150,150,150));
 
@@ -201,7 +224,7 @@ int main() {
         for (Platform& platform : platforms)
             platform.Draw(window);
 
-        sf::Sprite mapSide2Right1;
+       /* sf::Sprite mapSide2Right1;
         {
             mapSide2Right1.setTexture(mapSide2Right);
             mapSide2Right1.setPosition(sf::Vector2f(125.0f, -200.0f));
@@ -267,14 +290,55 @@ int main() {
             mapTopMid1.setPosition(sf::Vector2f(100.0f, 907.0f));
             mapTopMid1.setTextureRect(sf::IntRect(0, 0, 1118, 99));
             window.draw(mapTopMid1);
+            mapTopMid1.setPosition(sf::Vector2f(1605.0f, 995.0f));
+            mapTopMid1.setTextureRect(sf::IntRect(0, 0, 4044, 99));
+            window.draw(mapTopMid1);
 
-        }
+
+        }*/
 
 
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Z))
         {
             playerattack.Draw(window);
             playerstatus = 1;
+            
+            if (!player.SlashFaceRight())
+            {
+                slash.setPosition(player.GetPosition().x + 42.4f, player.GetPosition().y);
+                slash.setRotation(180.0f);
+            }
+            else
+            {
+                slash.setPosition(player.GetPosition().x - 42.4f, player.GetPosition().y);
+                slash.setRotation(0.0f);
+
+            }
+            
+            attackSwitch += deltaTime;
+            //printf("%.2f\n", attackSwitch);
+            window.draw(slash);
+            if (attackSwitch > 0.45f)
+            {
+                
+                Collider mushroomCollision = monsterMush.GetCollider();
+                
+                /*if (Collider(slash).CheckCollision(mushroomCollision, direction, 0.0f, 1))
+                {
+                    monsterMush.OnCollision(direction, deltaTime,1);
+                    if (player.GetPosition().x >= monsterMush.GetPosition().x)
+                    {
+                        monsterMush.monsGetHitFrom(true);
+                    }
+                       
+                    else
+                        monsterMush.monsGetHitFrom(false);
+                    printf("HIT\n");
+                }
+                    
+                attackSwitch -= 0.45f;*/
+            }
+            
         }
         else
         {
@@ -284,14 +348,18 @@ int main() {
         
         
         monsterMush.Draw(window);
-        
 
-        
         window.setView(minimapView);
-        player.Draw(window);
 
         for (Platform& platform : platforms)
             platform.Draw(window);
+
+        player.Draw(window);
+
+        
+
+        
+        
 
 
 

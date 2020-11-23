@@ -25,13 +25,13 @@ bool Collider::CheckCollision(Collider & other, sf::Vector2f& direction, float p
 	float intersectX = abs(deltaX) - (otherHalfSize.x + thisHalfSize.x);
 	float intersectY = abs(deltaY) - (otherHalfSize.y + thisHalfSize.y);
 
-	if (intersectX < 0.0f && intersectY < 0.0f && checkPush)
+	if (intersectX < 0.0f && intersectY < 0.0f )
 	{
 		
 		
 		std::min(std::max(push, 0.0f), 1.0f);
 
-		if (intersectX > intersectY)
+		if (intersectX > intersectY && checkPush)
 		{
 			if (deltaX > 0.0f)
 			{
@@ -41,7 +41,7 @@ bool Collider::CheckCollision(Collider & other, sf::Vector2f& direction, float p
 				direction.x = 1.0f;
 				direction.y = 0.0f;
 			}
-			else
+			else 
 			{
 				Move(-intersectX * (1.0f - push), 0.0f);
 				other.Move(intersectX * push, 0.0f);
@@ -49,7 +49,7 @@ bool Collider::CheckCollision(Collider & other, sf::Vector2f& direction, float p
 				direction.y = 0.0f;
 			}
 		}
-		else 
+		else if (intersectX <= intersectY && checkPush)
 		{
 			if (deltaY > 0.0f)
 			{
